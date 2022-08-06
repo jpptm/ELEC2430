@@ -21,9 +21,9 @@ def g(n):
 
 
 # Function for filtering data points
-def moving_average_filter(N: int, n: int, f):
-    # Declare an x array of length n, with steps of 1
-    xn = np.arange(0, n)
+def moving_average_filter(N: int, n: int, f, T=1.0):
+    # Declare an x array of length n, with steps of T
+    xn = np.arange(0, n, T)
     yn = []
 
     # For each step in the x array, calculate the moving average based on some value N
