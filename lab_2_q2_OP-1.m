@@ -24,6 +24,8 @@ x3 = u + cos(n*pi/4).*u;
 % Output To Response C
 c_y = conv(h,x3); 
 
+% Plot of h[n] 
+stem(h)
 %------------Response Plot-------------%
 % Plot of response A
 stem(a_y)
@@ -44,7 +46,7 @@ n = 0:50;
 % Unit step signal
 u = (n >= 0); 
 % h[n] 
-h = 0.5.^n + 1.*u; 
+h = 0.5.^(n + 1).*u; 
 
 % A
 x1 = u; 
@@ -61,6 +63,8 @@ x3 = u + cos(n*pi/4).*u;
 % Output To Response C
 c_y = conv(h,x3); 
 
+% Plot of h[n] 
+stem(h)
 %------------Response Plot-------------%
 % Plot of response A
 stem(a_y)

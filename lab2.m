@@ -1,86 +1,75 @@
 clc
 clear all
 
-% 8 point MA filter
-h = (ones(1,8))./8;
+%-----------------OPTION A-----------------%
+% Index
+n = 0:50; 
+% Unit step signal
+u = (n >= 0); 
+% h[n] 
+h = 2*0.6.^n.*u; 
 
-% Overshooting of n to 70 samples instead of 40
-n = 0:1:70;
+% A
+x1 = u; 
+% Output to Response A
+a_y = conv(h,x1); 
 
-% input
-x = 2 * (sin((pi*n / 10) - (pi / 3)));
+% B
+x2 = cos(n*pi/4).*u; 
+% Output to Response B
+b_y = conv(h,x2);
 
-% Create a matrix and fill it with zeros
-N1 = length(x);
-N2 = length(h);
-x = [x,zeros(1,N2)];
-h = [h,zeros(1,N1)];
+% C
+x3 = u + cos(n*pi/4).*u; 
+% Output To Response C
+c_y = conv(h,x3); 
 
-% Moving Average filter output
-for i = 1: N1 + N2 - 1
-    y(i) = 0;
-    for j = 1:N1
-        if((i-j+1)>0)
-        y(i)=y(i)+(x(j)*h(i-j+1));
-        end
-    end
-end
+%------------Response Plot-------------%
+% Plot of response A
+stem(a_y)
+% Plot of response B
+stem(b_y) 
+% Plot of response C
+stem(c_y) 
+% Plot of response a+b=c satisfies linearity check
+stem(a_y + b_y)
 
-n = 0:1:length(y)-1;
-
-% Plot of Filter input
-stem(x);
-grid;
-xlabel('n');
-ylabel('y(n)')
-title('Filter Input')
-
-% Plot of Output Response
-stem(n,y);
-grid;
-xlabel('n');
-ylabel('y(n)')
-title('Option A-8P-MAF Output')
+Result = 'From Observing the Plots you can realise that the response of c_y is the same as response of  a_y + b_y hence system is linear';
+disp(Result)
 
 
+%-----------------OPTION B-----------------%
+% Index
+n = 0:50; 
+% Unit step signal
+u = (n >= 0); 
+% h[n] 
+h = 0.5.^n + 1.*u; 
 
-%-------------------OPTION B-----------------%
-h = (ones(1,8))./8;
+% A
+x1 = u; 
+% Output to Response A
+a_y = conv(h,x1); 
 
-% Overshooting of n to 90 samples instead of 60
-n = 0:1:90;
+% B
+x2 = cos(n*pi/4).*u; 
+% Output to Response B
+b_y = conv(h,x2);
 
-% input
-x = 2 * (cos((pi*n / 10) - (pi / 3)));
+% C
+x3 = u + cos(n*pi/4).*u; 
+% Output To Response C
+c_y = conv(h,x3); 
 
-% Create a matrix and fill it with zeros
-N1 = length(x);
-N2 = length(h);
-x = [x,zeros(1,N2)];
-h = [h,zeros(1,N1)];
+%------------Response Plot-------------%
+% Plot of response A
+stem(a_y)
+% Plot of response B
+stem(b_y) 
+% Plot of response C
+stem(c_y) 
+% Plot of response a+b=c satisfies linearity check
+stem(a_y + b_y)
 
-% Moving Average filter output
-for i = 1: N1 + N2 - 1
-    y(i)=0;
-    for j = 1:N1
-        if((i-j+1)>0)
-        y(i)=y(i)+(x(j)*h(i-j+1));
-        end
-    end
-end
-
-n=0:1:length(y)-1;
-
-% Plot of Filter input
-stem(x);
-grid;
-xlabel('n');
-ylabel('y(n)')
-title('Filter Input')
-
-% Plot of Output Response
-stem(n,y);
-grid;
-xlabel('n');
-ylabel('y(n)')
-title('Option B-8P-MAF Output')
+Result = 'From Observing the Plots you can realise that the response of c_y is the same as response of  a_y + b_y hence system is linear';
+disp(Result)
