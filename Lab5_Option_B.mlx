@@ -1,0 +1,45 @@
+% Derived Variables
+% Un-used, just to highlight the relationship
+k = 1/M; 
+
+% Dampening ratio, must be postitive (between 0 and 1) 
+drto = abs(sqrt((log(OS_B)^2)/((log(OS_B))^2+pi^2)))
+
+% Natural frequency, using equation for underdampened systems
+wn_B = wd_B/sqrt(1-(drto)^2) 
+D = 2*wn_B*drto*M 
+K = M*wn_B^2
+
+% Defining the transfer function
+sys = tf((1/M),[1 (D/M) (K/M)])
+
+% Step response of System
+step(sys)
+
+% Verify stats are as expected, Overshoot is approx 3%
+stepinfo(sys)
+
+% Verify Natural Frequency and Dampening Ratio
+[wn,dratio] = damp(sys);
+dratio
+
+% Natural ocillation period
+Tn = 2*pi./wn; 
+wd = wn.*sqrt(1-dratio.^2);
+
+% Confirmation of dampened ocillation period
+Td = 2*pi./wd 
+bode(sys)
+
+% Setting the dampening ratio to 0, to find natural frequency
+% Natural frequency occurs at the peak magnitude of the bode plot
+sys_undampened = tf((1/M),[1 0 (K/M)])
+[peakMag, peakFrequency] = getPeakGain(sys_undampened);
+bode(sys_undampened)
+
+% Should be the same as the natural frequency
+peakFrequency 
+
+% -3dB gain of the dampened function
+halfpower_bandEdge = bandwidth(sys,-3) 
+% bandwidth(sys_undampened,-3); % -3dB gain of the undampened function
